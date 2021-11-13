@@ -1,0 +1,11 @@
+version: '2'
+services:
+  json_server:
+    image: "node:12"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 8080:3000
+    command: bash -c "cd app && npm install -g json-server && json-server --host 0.0.0.0 --watch db.json"
+    

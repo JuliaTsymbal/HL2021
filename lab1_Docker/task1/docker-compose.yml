@@ -1,0 +1,4 @@
+version: '2'
+services:
+  hello_world_service:
+    image: hello-world:latest

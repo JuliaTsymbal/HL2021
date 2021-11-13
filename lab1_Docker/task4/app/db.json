@@ -1,0 +1,24 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "task4-complexity-assesment",
+      "author": "me"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "task 4 was really hard to figure out",
+      "postId": 1
+    },
+    {
+      "id": 2,
+      "body": "postman comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
