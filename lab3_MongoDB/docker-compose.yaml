@@ -1,0 +1,202 @@
+version: '3'
+
+services:
+### CONFIG SERVERS (3)
+  node1_service:
+    container_name: conf_node1
+    image: mongo:latest
+    command: mongod --configsvr --replSet config_serv_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 40001:27017
+    expose:
+      - 27017
+    volumes:
+      - conf_node1:/data/db
+
+  node2_service:
+    container_name: conf_node2
+    image: mongo:latest
+    command: mongod --configsvr --replSet config_serv_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 40002:27017
+    expose:
+      - 27017
+    volumes:
+      - conf_node2:/data/db
+
+  node3_service:
+    container_name: conf_node3
+    image: mongo:latest
+    command: mongod --configsvr --replSet config_serv_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 40003:27017
+    expose:
+      - 27017
+    volumes:
+      - conf_node3:/data/db
+
+### MONGOS MAIN PROCESS
+  mongos_serv:
+    container_name: mongos_serv
+    depends_on:
+      - node1_service
+      - node2_service
+      - node3_service
+    image: mongo
+    command: mongos --bind_ip_all --configdb config_serv_repl_set/conf_node1:27017,conf_node2:27017,conf_node3:27017 --port 27017
+    ports:
+      - 60000:27017
+
+### SHARD 1
+  shard1_service1:
+    container_name: shard1_node1
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50001:27017
+    expose:
+      - 27017
+    volumes:
+      - shard_node1:/data/db
+
+  shard1_service2:
+    container_name: shard1_node2
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50002:27017
+    expose:
+      - 27017
+    volumes:
+      - shard_node2:/data/db
+
+  shard1_service3:
+    container_name: shard1_node3
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50003:27017
+    expose:
+      - 27017
+    volumes:
+      - shard_node3:/data/db
+  
+### SHARD 2
+  shard2_service1:
+    container_name: shard2_node1
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set2 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50004:27017
+    expose:
+      - 27017
+    volumes:
+      - shard2_node1:/data/db
+
+  shard2_service2:
+    container_name: shard2_node2
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set2 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50005:27017
+    expose:
+      - 27017
+    volumes:
+      - shard2_node2:/data/db
+
+  shard2_service3:
+    container_name: shard2_node3
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set2 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50006:27017
+    expose:
+      - 27017
+    volumes:
+      - shard2_node3:/data/db
+  
+### SHARD 3
+  shard3_service1:
+    container_name: shard3_node1
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set3 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50007:27017
+    expose:
+      - 27017
+    volumes:
+      - shard3_node1:/data/db
+
+  shard3_service2:
+    container_name: shard3_node2
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set3 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50008:27017
+    expose:
+      - 27017
+    volumes:
+      - shard3_node2:/data/db
+
+  shard3_service3:
+    container_name: shard3_node3
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set3 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50009:27017
+    expose:
+      - 27017
+    volumes:
+      - shard3_node3:/data/db
+
+### SHARD 4
+  shard4_service1:
+    container_name: shard4_node1
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set4 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50010:27017
+    expose:
+      - 27017
+    volumes:
+      - shard4_node1:/data/db
+
+  shard4_service2:
+    container_name: shard4_node2
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set4 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50011:27017
+    expose:
+      - 27017
+    volumes:
+      - shard4_node2:/data/db
+
+  shard4_service3:
+    container_name: shard4_node3
+    image: mongo
+    command: mongod --shardsvr --replSet shard_repl_set4 --port 27017 --dbpath /data/db --bind_ip_all
+    ports:
+      - 50012:27017
+    expose:
+      - 27017
+    volumes:
+      - shard4_node3:/data/db
+
+### VOLUMES
+volumes:
+  conf_node1: {}
+  conf_node2: {}
+  conf_node3: {}
+  shard_node1: {}
+  shard_node2: {}
+  shard_node3: {}
+  shard2_node1: {}
+  shard2_node2: {}
+  shard2_node3: {}
+  shard3_node1: {}
+  shard3_node2: {}
+  shard3_node3: {}
+  shard4_node1: {}
+  shard4_node2: {}
+  shard4_node3: {}
